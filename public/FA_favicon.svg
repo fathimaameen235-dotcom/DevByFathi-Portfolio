@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0d1520"/>
+      <stop offset="100%" stop-color="#060c14"/>
+    </radialGradient>
+    <radialGradient id="glowOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff6b1a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ff6b1a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#e8edf5"/>
+      <stop offset="100%" stop-color="#ff8c42"/>
+    </linearGradient>
+    <linearGradient id="aGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#d0f0ff"/>
+      <stop offset="100%" stop-color="#00c8f0"/>
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff6b1a"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00d4ff"/>
+    </linearGradient>
+    <filter id="glowFilterO" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowFilterC" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="512" rx="80" fill="url(#bgGrad)"/>
+  <!-- Outer subtle border -->
+  <rect x="0" y="0" width="512" height="512" rx="80" fill="none" stroke="#1e3a5a" stroke-width="2"/>
+
+  <!-- Ambient glow blobs -->
+  <ellipse cx="170" cy="210" rx="200" ry="180" fill="url(#glowOrange)"/>
+  <ellipse cx="350" cy="300" rx="180" ry="155" fill="url(#glowCyan)"/>
+
+  <!-- Corner accent dots -->
+  <circle cx="40" cy="40" r="5" fill="#ff6b1a" opacity="0.5"/>
+  <circle cx="472" cy="40" r="5" fill="#00d4ff" opacity="0.5"/>
+  <circle cx="40" cy="472" r="5" fill="#00d4ff" opacity="0.3"/>
+  <circle cx="472" cy="472" r="5" fill="#ff6b1a" opacity="0.3"/>
+
+  <!-- Subtle grid lines -->
+  <line x1="0" y1="256" x2="512" y2="256" stroke="#ffffff" stroke-width="0.5" opacity="0.04"/>
+  <line x1="256" y1="0" x2="256" y2="512" stroke="#ffffff" stroke-width="0.5" opacity="0.04"/>
+
+  <!-- "F" glow layer -->
+  <g filter="url(#glowFilterO)" opacity="0.65">
+    <path d="M80 108 L80 400 L138 400 L138 270 L258 270 L258 218 L138 218 L138 160 L274 160 L274 108 Z"
+          fill="#ff6b1a"/>
+  </g>
+  <!-- "F" crisp -->
+  <path d="M80 108 L80 400 L138 400 L138 270 L258 270 L258 218 L138 218 L138 160 L274 160 L274 108 Z"
+        fill="url(#fGrad)"/>
+
+  <!-- "A" glow layer -->
+  <g filter="url(#glowFilterC)" opacity="0.6">
+    <path d="M300 400 L358 400 L372 358 L454 358 L468 400 L530 400 L450 108 L374 108 Z" fill="#00d4ff"/>
+  </g>
+  <!-- "A" crisp -->
+  <path d="M300 400 L358 400 L372 358 L454 358 L468 400 L530 400 L450 108 L374 108 Z"
+        fill="url(#aGrad)"/>
+  <!-- A crossbar cutout -->
+  <path d="M382 330 L412 220 L442 330 Z" fill="#060c14"/>
+
+  <!-- Bottom accent bar -->
+  <rect x="72" y="424" width="370" height="3" rx="1.5" fill="url(#accentLine)" opacity="0.85"/>
+  <!-- Accent end dots -->
+  <circle cx="72" cy="425.5" r="5" fill="#ff6b1a" opacity="0.9"/>
+  <circle cx="442" cy="425.5" r="5" fill="#00d4ff" opacity="0.9"/>
+</svg>
