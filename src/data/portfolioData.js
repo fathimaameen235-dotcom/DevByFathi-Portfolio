@@ -296,6 +296,29 @@ accentColor: "#ec4899",
 icon: "📈",
 gradient: "from-pink-500/20 to-rose-500/10",
 },
+{
+  id: 10,
+  name: "ExpenseTrack",
+  category: "Java Spring Boot",
+  description:
+    "Simple personal expense tracking application built using Spring Boot and MySQL with CRUD operations for managing daily expenses.",
+  features: [
+    "Add Expenses",
+    "View Expense List",
+    "Delete Expenses",
+    "CRUD Operations",
+    "REST API Integration",
+  ],
+  tech: ["Java", "Spring Boot", "MySQL", "REST API"],
+  status: "live",
+  badge: "Spring Boot Project",
+  github:
+    "https://github.com/fathimaameen235-dotcom/springboot-expense-tracker.git",
+  live: null,
+  accentColor: "#16a34a",
+  icon: "💰",
+  gradient: "from-green-500/20 to-emerald-500/10",
+},
 ];
 
 export const groupProject = {

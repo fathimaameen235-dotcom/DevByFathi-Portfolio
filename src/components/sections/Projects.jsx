@@ -348,34 +348,44 @@ export default function Projects() {
     useState('All');
 
   const filteredProjects =
-    filter === 'All'
-      ? projects
-      : filter === 'React'
-      ? projects.filter((project) =>
+  filter === 'All'
+    ? projects
+    : filter === 'React'
+    ? projects.filter((project) =>
+        project.category
+          ?.toLowerCase()
+          .includes('react')
+      )
+    : filter === 'Java'
+    ? projects.filter(
+        (project) =>
           project.category
             ?.toLowerCase()
-            .includes('react')
-        )
-      : filter === 'Java'
-      ? projects.filter((project) =>
-          project.category
-            ?.toLowerCase()
-            .includes('java')
-        )
-      : filter === 'MERN'
-      ? projects.filter((project) =>
-          project.category
-            ?.toLowerCase()
-            .includes('mern')
-        )
-      : filter === 'Team'
-      ? projects.filter(
-          (project) =>
-            project.isGroupProject ===
-            true
-        )
-      : projects;
-
+            .includes('java') ||
+          project.tech?.some((tech) =>
+            tech
+              .toLowerCase()
+              .includes('java')
+          ) ||
+          project.tech?.some((tech) =>
+            tech
+              .toLowerCase()
+              .includes('spring')
+          )
+      )
+    : filter === 'MERN'
+    ? projects.filter((project) =>
+        project.category
+          ?.toLowerCase()
+          .includes('mern')
+      )
+    : filter === 'Team'
+    ? projects.filter(
+        (project) =>
+          project.isGroupProject ===
+          true
+      )
+    : projects;
   return (
     <section
       id="projects"
