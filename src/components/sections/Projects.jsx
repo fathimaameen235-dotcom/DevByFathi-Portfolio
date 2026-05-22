@@ -4,7 +4,6 @@ import {
   ExternalLink,
   Github,
   ArrowRight,
-  Layers,
   Users,
 } from 'lucide-react';
 
@@ -348,50 +347,68 @@ export default function Projects() {
     useState('All');
 
   const filteredProjects =
-  filter === 'All'
-    ? projects
-    : filter === 'React'
-    ? projects.filter((project) =>
-        project.category
-          ?.toLowerCase()
-          .includes('react')
-      )
-    : filter === 'Java'
-    ? projects.filter(
-        (project) =>
+    filter === 'All'
+      ? projects
+
+      : filter === 'React'
+      ? projects.filter((project) =>
           project.category
             ?.toLowerCase()
-            .includes('java') ||
-          project.tech?.some((tech) =>
-            tech
-              .toLowerCase()
-              .includes('java')
-          ) ||
-          project.tech?.some((tech) =>
-            tech
-              .toLowerCase()
+            .includes('react')
+        )
+
+      : filter === 'Java'
+      ? projects.filter(
+          (project) =>
+            project.category
+              ?.toLowerCase()
+              .includes('java') ||
+            project.category
+              ?.toLowerCase()
               .includes('spring')
-          )
-      )
-    : filter === 'MERN'
-    ? projects.filter((project) =>
-        project.category
-          ?.toLowerCase()
-          .includes('mern')
-      )
-    : filter === 'Team'
-    ? projects.filter(
-        (project) =>
-          project.isGroupProject ===
-          true
-      )
-    : projects;
+        )
+
+      : filter === 'MERN'
+      ? projects.filter((project) =>
+          project.category
+            ?.toLowerCase()
+            .includes('mern')
+        )
+
+      : filter === 'Team'
+      ? projects.filter(
+          (project) =>
+            project.isGroupProject ===
+            true
+        )
+
+      : projects;
+
   return (
     <section
       id="projects"
       className="relative overflow-hidden py-28 px-6"
     >
       <div className="max-w-7xl mx-auto relative z-10">
+
+        {/* FILTER BUTTONS */}
+        <div className="flex flex-wrap justify-center gap-4 mb-14">
+          {FILTERS.map((item) => (
+            <button
+              key={item}
+              onClick={() => setFilter(item)}
+              className={`px-5 py-2.5 rounded-full border text-sm font-semibold transition-all duration-300 ${
+                filter === item
+                  ? 'bg-orange-500 text-white border-orange-500 shadow-lg shadow-orange-500/20'
+                  : 'border-white/10 text-gray-400 hover:border-orange-400 hover:text-white'
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* PROJECT GRID */}
         <AnimatePresence mode="wait">
           <motion.div
             key={filter}
@@ -414,6 +431,7 @@ export default function Projects() {
             )}
           </motion.div>
         </AnimatePresence>
+
       </div>
     </section>
   );
