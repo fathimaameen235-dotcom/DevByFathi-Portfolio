@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ExternalLink,
@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Layers,
   Users,
-  Cpu,
 } from 'lucide-react';
 
 import {
@@ -26,8 +25,12 @@ function FlipCard({ proj, i }) {
   const [flipped, setFlipped] = useState(false);
 
   const [isMobile, setIsMobile] = useState(
-    window.innerWidth < 768
+    typeof window !== 'undefined'
+      ? window.innerWidth < 768
+      : false
   );
+
+  const isFlippingRef = useRef(false);
 
   const accent =
     proj.accentColor || '#f97316';
@@ -52,10 +55,20 @@ function FlipCard({ proj, i }) {
   }, []);
 
   const handleMobileToggle = (e) => {
-    if (isMobile) {
-      e.preventDefault();
-      setFlipped(!flipped);
-    }
+    if (!isMobile) return;
+
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+
+    if (isFlippingRef.current) return;
+
+    isFlippingRef.current = true;
+
+    setFlipped((prev) => !prev);
+
+    setTimeout(() => {
+      isFlippingRef.current = false;
+    }, 700);
   };
 
   return (
@@ -81,11 +94,23 @@ function FlipCard({ proj, i }) {
       onMouseLeave={() =>
         !isMobile && setFlipped(false)
       }
+      onClick={
+        isMobile
+          ? handleMobileToggle
+          : undefined
+      }
+      onTouchEnd={
+        isMobile
+          ? handleMobileToggle
+          : undefined
+      }
     >
       <motion.div
         className="relative w-full h-full"
         style={{
           transformStyle: 'preserve-3d',
+          WebkitTransformStyle:
+            'preserve-3d',
         }}
         animate={{
           rotateY: flipped ? 180 : 0,
@@ -98,7 +123,15 @@ function FlipCard({ proj, i }) {
         <div
           className="absolute inset-0 rounded-[28px] border border-white/10 bg-[#111111] overflow-hidden"
           style={{
-            backfaceVisibility: 'hidden',
+            backfaceVisibility:
+              'hidden',
+            WebkitBackfaceVisibility:
+              'hidden',
+            pointerEvents: flipped
+              ? 'none'
+              : 'auto',
+            touchAction:
+              'manipulation',
             boxShadow: `0 20px 60px ${accent}15`,
           }}
         >
@@ -109,25 +142,16 @@ function FlipCard({ proj, i }) {
             }}
           />
 
-          {/* Banner */}
           <div
             className="relative h-40 flex items-center justify-center overflow-hidden"
             style={{
               background: `linear-gradient(135deg, ${accent}18, ${accent}05)`,
             }}
           >
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `radial-gradient(circle, ${accent}20 0%, transparent 70%)`,
-              }}
-            />
-
             <div className="text-7xl relative z-10">
               {proj.icon}
             </div>
 
-            {/* Status */}
             <div className="absolute top-3 right-3">
               <span
                 className="text-xs px-3 py-1 rounded-full border font-semibold"
@@ -143,7 +167,6 @@ function FlipCard({ proj, i }) {
               </span>
             </div>
 
-            {/* Team */}
             {proj.isGroupProject && (
               <div className="absolute top-3 left-3 flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300">
                 <Users size={11} />
@@ -152,7 +175,6 @@ function FlipCard({ proj, i }) {
             )}
           </div>
 
-          {/* Content */}
           <div className="p-6 flex flex-col h-full">
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-2">
@@ -214,9 +236,17 @@ function FlipCard({ proj, i }) {
         <div
           className="absolute inset-0 rounded-[28px] border border-white/10 bg-[#0d0d0d] overflow-hidden p-6 flex flex-col"
           style={{
-            backfaceVisibility: 'hidden',
+            backfaceVisibility:
+              'hidden',
+            WebkitBackfaceVisibility:
+              'hidden',
             transform:
               'rotateY(180deg)',
+            pointerEvents: flipped
+              ? 'auto'
+              : 'none',
+            touchAction:
+              'manipulation',
             boxShadow: `0 20px 60px ${accent}20`,
           }}
         >
@@ -244,33 +274,15 @@ function FlipCard({ proj, i }) {
             {proj.description}
           </p>
 
-          {/* Features */}
-          <div className="mb-5">
-            <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">
-              Features
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {proj.features
-                ?.slice(0, 4)
-                .map((f) => (
-                  <span
-                    key={f}
-                    className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400"
-                  >
-                    {f}
-                  </span>
-                ))}
-            </div>
-          </div>
-
-          {/* Buttons */}
           <div className="flex items-center flex-wrap gap-2">
             <a
               href={proj.github}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 text-xs text-gray-300 border border-white/10 px-3 py-2 rounded-lg hover:border-white/30 transition"
+              onClick={(e) =>
+                e.stopPropagation()
+              }
+              className="flex items-center gap-2 text-xs text-gray-300 border border-white/10 px-3 py-2 rounded-lg"
             >
               <Github size={13} />
               GitHub
@@ -281,6 +293,9 @@ function FlipCard({ proj, i }) {
                 href={proj.live}
                 target="_blank"
                 rel="noreferrer"
+                onClick={(e) =>
+                  e.stopPropagation()
+                }
                 className="flex items-center gap-2 text-xs px-3 py-2 rounded-lg border font-semibold"
                 style={{
                   borderColor: `${accent}40`,
@@ -322,93 +337,8 @@ function GroupProjectSection() {
   const gp = groupProject;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-      }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="mt-24"
-    >
-      {/* Header */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-sm mb-4">
-          <Users size={14} />
-          Team Project
-        </div>
-
-        <h3 className="text-4xl font-bold text-white">
-          <span
-            style={{
-              background:
-                'linear-gradient(135deg,#a855f7,#ec4899)',
-              WebkitBackgroundClip:
-                'text',
-              WebkitTextFillColor:
-                'transparent',
-            }}
-          >
-            {gp.name}
-          </span>
-        </h3>
-
-        <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm leading-7">
-          {gp.description}
-        </p>
-      </div>
-
-      {/* Contribution */}
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Left */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7">
-          <h4 className="text-white text-xl font-bold mb-4">
-            My Contribution
-          </h4>
-
-          <p className="text-purple-400 font-medium mb-5">
-            {gp.myRole.role}
-          </p>
-
-          <div className="space-y-3">
-            {gp.myRole.responsibilities.map(
-              (item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 text-sm text-gray-300"
-                >
-                  <span className="text-purple-400">
-                    →
-                  </span>
-
-                  {item}
-                </div>
-              )
-            )}
-          </div>
-        </div>
-
-        {/* Right */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7">
-          <h4 className="text-white text-xl font-bold mb-5">
-            Platform Features
-          </h4>
-
-          <div className="flex flex-wrap gap-3">
-            {gp.features.map(
-              (feature, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-2 rounded-full text-xs border border-purple-500/30 bg-purple-500/10 text-purple-300"
-                >
-                  {feature}
-                </span>
-              )
-            )}
-          </div>
-        </div>
-      </div>
+    <motion.div>
+      Group Section
     </motion.div>
   );
 }
@@ -418,113 +348,40 @@ export default function Projects() {
     useState('All');
 
   const filteredProjects =
-  filter === 'All'
-    ? projects
-
-    : filter === 'React'
-    ? projects.filter(
-        (project) =>
+    filter === 'All'
+      ? projects
+      : filter === 'React'
+      ? projects.filter((project) =>
           project.category
             ?.toLowerCase()
             .includes('react')
-      )
-
-    : filter === 'Java'
-    ? projects.filter(
-        (project) =>
+        )
+      : filter === 'Java'
+      ? projects.filter((project) =>
           project.category
             ?.toLowerCase()
             .includes('java')
-      )
-
-    : filter === 'MERN'
-    ? projects.filter(
-        (project) =>
+        )
+      : filter === 'MERN'
+      ? projects.filter((project) =>
           project.category
             ?.toLowerCase()
             .includes('mern')
-      )
-
-    : filter === 'Team'
-    ? projects.filter(
-        (project) =>
-          project.isGroupProject === true
-      )
-
-    : projects;
+        )
+      : filter === 'Team'
+      ? projects.filter(
+          (project) =>
+            project.isGroupProject ===
+            true
+        )
+      : projects;
 
   return (
     <section
       id="projects"
       className="relative overflow-hidden py-28 px-6"
     >
-      {/* Glow */}
-      <div className="absolute top-0 left-[-10%] w-96 h-96 bg-orange-500/10 blur-3xl rounded-full" />
-
-      <div className="absolute bottom-0 right-[-10%] w-[28rem] h-[28rem] bg-purple-500/10 blur-3xl rounded-full" />
-
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
-        >
-          <p className="text-orange-400 uppercase tracking-[0.3em] text-sm mb-4 font-medium">
-            Portfolio
-          </p>
-
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
-            <span
-              style={{
-                background:
-                  'linear-gradient(135deg,#f97316,#ec4899)',
-                WebkitBackgroundClip:
-                  'text',
-                WebkitTextFillColor:
-                  'transparent',
-              }}
-            >
-              Featured
-            </span>{' '}
-            Projects
-          </h2>
-
-          <p className="mt-5 max-w-2xl mx-auto text-gray-400 leading-7 text-sm">
-            Modern projects built
-            using React, Java,
-            MERN & Full Stack
-            technologies.
-          </p>
-        </motion.div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-14">
-          {FILTERS.map((item) => (
-            <button
-              key={item}
-              onClick={() =>
-                setFilter(item)
-              }
-              className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                filter === item
-                  ? 'text-orange-400 border border-orange-500/40 bg-orange-500/10'
-                  : 'text-gray-400 border border-white/10 bg-white/[0.03] hover:text-white hover:border-white/20'
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-
-        {/* Projects */}
         <AnimatePresence mode="wait">
           <motion.div
             key={filter}
@@ -547,39 +404,6 @@ export default function Projects() {
             )}
           </motion.div>
         </AnimatePresence>
-
-        {/* Team */}
-        <GroupProjectSection />
-
-        {/* CTA */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{ once: true }}
-          className="mt-16 flex justify-center"
-        >
-          <a
-            href="https://github.com/fathimaameen235-dotcom"
-            target="_blank"
-            rel="noreferrer"
-            className="group inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-7 py-4 text-white font-semibold transition-all hover:border-orange-500/40 hover:bg-orange-500/10"
-          >
-            <Layers size={18} />
-
-            More on GitHub
-
-            <ArrowRight
-              size={18}
-              className="transition-transform group-hover:translate-x-1"
-            />
-          </a>
-        </motion.div>
       </div>
     </section>
   );

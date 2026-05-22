@@ -59,62 +59,62 @@ export default function Contact() {
   };
 
   const send = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (
-    !fields.name.trim() ||
-    !fields.email.trim() ||
-    !fields.subject.trim() ||
-    !fields.message.trim()
-  ) {
-    setStatus('error');
-    return;
-  }
-
-  setSending(true);
-  setStatus(null);
-
-  try {
-    const response = await emailjs.send(
-  'service_xspbc6s',
-  'template_9pu59do',
-  {
-    from_name: fields.name,
-    from_email: fields.email,
-    subject: fields.subject,
-    message: fields.message,
-  },
-  'FxyqVHaZ8zg61K6ec'
-);
-
-    console.log('SUCCESS!', response);
-
-    setStatus('success');
-
-    setFields({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    });
-
-    if (formRef.current) {
-      formRef.current.reset();
+    if (
+      !fields.name.trim() ||
+      !fields.email.trim() ||
+      !fields.subject.trim() ||
+      !fields.message.trim()
+    ) {
+      setStatus('error');
+      return;
     }
-  } catch (error) {
-    console.log('FULL ERROR:', error);
 
-    alert(error?.text || 'Email failed');
+    setSending(true);
+    setStatus(null);
 
-    setStatus('error');
-  } finally {
-    setSending(false);
+    try {
+      const response = await emailjs.send(
+        'service_xspbc6s',
+        'template_9pu59do',
+        {
+          from_name: fields.name,
+          from_email: fields.email,
+          subject: fields.subject,
+          message: fields.message,
+        },
+        'FxyqVHaZ8zg61K6ec'
+      );
 
-    setTimeout(() => {
-      setStatus(null);
-    }, 5000);
-  }
-};
+      console.log('SUCCESS!', response);
+
+      setStatus('success');
+
+      setFields({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+    } catch (error) {
+      console.log('FULL ERROR:', error);
+
+      alert(error?.text || 'Email failed');
+
+      setStatus('error');
+    } finally {
+      setSending(false);
+
+      setTimeout(() => {
+        setStatus(null);
+      }, 5000);
+    }
+  };
 
   return (
     <section
@@ -200,8 +200,8 @@ export default function Contact() {
                 color,
               }) => (
                 <motion.a
-  key={label}
-  href={href}
+                  key={label}
+                  href={href}
                   target="_blank"
                   rel="noreferrer"
                   whileHover={{ y: -4 }}
@@ -351,11 +351,10 @@ export default function Contact() {
                     y: 12,
                   }}
                   transition={{ duration: 0.3 }}
-                  className={`mt-5 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-medium ${
-                    status === 'success'
+                  className={`mt-5 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-medium ${status === 'success'
                       ? 'border-lime-500/30 bg-lime-500/10 text-lime-400'
                       : 'border-red-500/30 bg-red-500/10 text-red-400'
-                  }`}
+                    }`}
                 >
                   {status === 'success' ? (
                     <>

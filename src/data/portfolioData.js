@@ -138,7 +138,7 @@ export const projects = [
     tech: ["React.js","Node.js","Express.js","MongoDB"],
     status: "building",
     badge: "In Progress",
-    github: "https://github.com/alifathima-dev/novacart",
+    github:"https://github.com/fathimaameen235-dotcom/NovaCart-Mern.git",
     live: null,
     accentColor: "#f97316",
     icon: "🛒",
