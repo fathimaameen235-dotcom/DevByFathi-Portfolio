@@ -133,24 +133,38 @@ export const projects = [
   {
     id: 1,
     name: "NovaCart",
-    // FIX: was "MERN E-Commerce" — standardised to include "MERN" for filter match
     category: "MERN · E-Commerce",
     filterTags: ["MERN"],
+    featured: true,
     description:
       "Modern MERN stack e-commerce platform with full authentication, cart system, product management, and a scalable backend architecture.",
+    extendedDescription:
+      "NovaCart is a production-ready full-stack e-commerce platform built with the MERN stack. It features secure JWT-based authentication, a fully functional cart and checkout flow, Razorpay payment integration, and a cloud-connected MongoDB Atlas database — all wrapped in a sleek, mobile-first UI.",
     features: [
       "User Authentication (JWT)",
       "Product Catalog & Search",
       "Cart & Checkout Flow",
       "Admin Dashboard",
-      "MongoDB Data Layer",
+      "MongoDB Atlas Data Layer",
       "REST API Backend",
+      "Razorpay Integration",
+      "Mobile-First Design",
+    ],
+    techBadges: [
+      { name: "Full Stack MERN", color: "#f97316" },
+      { name: "React.js", color: "#61dafb" },
+      { name: "Node.js", color: "#84cc16" },
+      { name: "Express.js", color: "#9ca3af" },
+      { name: "MongoDB Atlas", color: "#86efac" },
+      { name: "Tailwind CSS", color: "#38bdf8" },
+      { name: "JWT Authentication", color: "#f59e0b" },
+      { name: "Razorpay Integration", color: "#a855f7" },
     ],
     tech: ["React.js", "Node.js", "Express.js", "MongoDB"],
-    status: "building",
+    status: "live",
     badge: "In Progress",
     github: "https://github.com/fathimaameen235-dotcom/NovaCart-Mern.git",
-    live: null,
+    live: "https://novacart-mern.vercel.app/",
     accentColor: "#f97316",
     icon: "🛒",
     gradient: "from-orange-500/20 to-red-500/10",
@@ -159,7 +173,6 @@ export const projects = [
   {
     id: 2,
     name: "Cafe App",
-    // FIX: was "React Frontend" — standardised to start with "React" for filter match
     category: "React · Frontend",
     filterTags: ["React"],
     description:
@@ -185,7 +198,6 @@ export const projects = [
   {
     id: 3,
     name: "Nexa AI App",
-    // FIX: was "AI React Application" — standardised to include "React" for filter match
     category: "React · AI Application",
     filterTags: ["React"],
     description:
@@ -211,7 +223,6 @@ export const projects = [
   {
     id: 4,
     name: "Farmer Support Website",
-    // FIX: was "React Frontend" — standardised
     category: "React · Frontend",
     filterTags: ["React"],
     description:
@@ -238,11 +249,9 @@ export const projects = [
     id: 5,
     name: "AI Defect Tracker",
     category: "Full Stack · Team Project",
-    // Team filter ONLY — must NOT appear under React, Java, or MERN filters
     filterTags: ["Team"],
     description:
       "Enterprise-grade AI-powered bug tracking platform built with React, Spring Boot, MySQL, and OpenAI API. Features JWT auth, AI severity prediction, and real-time collaboration.",
-    // Platform-level features (all members, shown for all filters)
     features: [
       "JWT Authentication",
       "Bug Reporting & Tracking",
@@ -260,16 +269,12 @@ export const projects = [
     icon: "🐛",
     gradient: "from-purple-500/20 to-pink-500/10",
     isGroupProject: true,
-    // ── Team-filter-only fields ──────────────────────────────────────────────
-    // These are rendered ONLY when filter === "Team". Other filters ignore them.
     teamName: "Future Devs",
     myRole: {
       name: "Ali Fathima",
       role: "Frontend & Dashboard Developer",
-      // What I personally built / contributed to this project
       contribution:
         "Led the entire frontend layer — from authentication screens to the real-time analytics dashboard — and integrated all UI components with the Spring Boot REST APIs.",
-      // Specific tasks & features owned
       responsibilities: [
         "Designed responsive Login & Registration UI",
         "Built Bug Submission Form",
@@ -282,7 +287,6 @@ export const projects = [
         "Enhanced UI/UX Experience",
         "Built reusable frontend components",
       ],
-      // Subset of platform features that I personally worked on
       featuresWorkedOn: [
         "Login & Signup UI",
         "Bug Submission Form",
@@ -298,7 +302,6 @@ export const projects = [
   {
     id: 6,
     name: "Library Management System",
-    // FIX: was "Java Console Project" — standardised to start with "Java"
     category: "Java · Console Project",
     filterTags: ["Java"],
     description:
@@ -391,7 +394,6 @@ export const projects = [
   {
     id: 10,
     name: "ExpenseTrack",
-    // FIX: was "Java Spring Boot" — standardised to start with "Java"
     category: "Java · Spring Boot",
     filterTags: ["Java"],
     description:
@@ -566,11 +568,11 @@ export const dbProjects = [
 export const learning = [
   {
     type: "completed",
-    title: "MERN Full Stack Course",
-    organization: "Self-Directed Learning",
+    title: "Full Stack Development",
+    organization: "Shikshaa Simple Learn Institute",
     period: "Completed",
     description:
-      "Mastered full-stack development with React, Node.js, Express, MongoDB, and implemented JWT authentication, REST APIs, and database integration.",
+      "Completed comprehensive Full Stack Development training focused on modern web application development, frontend and backend technologies, REST APIs, authentication, database integration, and real-world project implementation.",
     color: "#22d3ee",
     icon: "🚀",
   },
