@@ -8,6 +8,8 @@ import {
   Star,
   Zap,
   ShoppingCart,
+  PlayCircle,
+  Wallet,
 } from 'lucide-react';
 
 import {
@@ -18,10 +20,23 @@ import {
 const FILTERS = ['All', 'React', 'Java', 'MERN', 'Team'];
 
 /* ─────────────────────────────────────────────────────────────
-   NOVACART FEATURED SPOTLIGHT
-   Full-width hero card that visually anchors the entire section
+   ICON MAP for spotlight badge row (per-project accent icon)
 ───────────────────────────────────────────────────────────── */
-function NovaCartSpotlight({ proj }) {
+const SPOTLIGHT_ICONS = {
+  NovaCart: ShoppingCart,
+  'Expense Tracker': Wallet,
+};
+
+/* ─────────────────────────────────────────────────────────────
+   REUSABLE PROJECT SPOTLIGHT
+   Full-width hero card used for every featured project
+   (NovaCart, Expense Tracker, and any future flagship project)
+───────────────────────────────────────────────────────────── */
+function ProjectSpotlight({ proj }) {
+  const accent = proj.accentColor || '#f97316';
+  const BadgeIcon = SPOTLIGHT_ICONS[proj.name] || Star;
+  const hasDemo = proj.demo && proj.demo !== 'PASTE_DEMO_VIDEO_LINK';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -30,15 +45,15 @@ function NovaCartSpotlight({ proj }) {
       transition={{ duration: 0.7, ease: 'easeOut' }}
       className="relative w-full mb-16 rounded-[32px] overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #0f0f0f 0%, #1a0f00 50%, #0f0f0f 100%)',
-        boxShadow: '0 0 0 1px rgba(249,115,22,0.25), 0 32px 80px rgba(249,115,22,0.18), 0 0 120px rgba(249,115,22,0.06)',
+        background: 'linear-gradient(135deg, #0f0f0f 0%, #0f0f0f 50%, #0f0f0f 100%)',
+        boxShadow: `0 0 0 1px ${accent}40, 0 32px 80px ${accent}30, 0 0 120px ${accent}10`,
       }}
     >
       {/* Animated shimmer border */}
       <div
         className="absolute inset-0 rounded-[32px] pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(249,115,22,0.5) 0%, transparent 40%, rgba(251,146,60,0.3) 70%, transparent 100%)',
+          background: `linear-gradient(135deg, ${accent}80 0%, transparent 40%, ${accent}50 70%, transparent 100%)`,
           padding: '1px',
           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
@@ -49,33 +64,31 @@ function NovaCartSpotlight({ proj }) {
       {/* Glow orb top-right */}
       <div
         className="absolute -top-24 -right-24 w-96 h-96 rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%)',
-        }}
+        style={{ background: `radial-gradient(circle, ${accent}26 0%, transparent 70%)` }}
       />
       {/* Glow orb bottom-left */}
       <div
         className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(251,146,60,0.1) 0%, transparent 70%)',
-        }}
+        style={{ background: `radial-gradient(circle, ${accent}1a 0%, transparent 70%)` }}
       />
 
       {/* Top accent bar — animated */}
       <div
         className="h-[3px] w-full"
         style={{
-          background: 'linear-gradient(90deg, transparent, #f97316, #fb923c, #fbbf24, #f97316, transparent)',
+          background: `linear-gradient(90deg, transparent, ${accent}, ${accent}cc, ${accent}, transparent)`,
           backgroundSize: '200% 100%',
           animation: 'shimmer 3s linear infinite',
         }}
       />
 
-      <div className="relative z-10 p-8 md:p-12">
+      <div className="relative z-10 p-6 sm:p-8 md:p-12">
         {/* Top badge row */}
         <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"
-            style={{ background: 'linear-gradient(135deg, #f97316, #fb923c)', color: '#fff' }}>
+          <span
+            className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"
+            style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: '#fff' }}
+          >
             <Star size={11} fill="currentColor" />
             Featured Project
           </span>
@@ -83,9 +96,12 @@ function NovaCartSpotlight({ proj }) {
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             Live · Deployed
           </span>
-          <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-300">
-            <ShoppingCart size={11} />
-            Full Stack MERN
+          <span
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border"
+            style={{ borderColor: `${accent}4d`, background: `${accent}1a`, color: accent }}
+          >
+            <BadgeIcon size={11} />
+            Full Stack
           </span>
         </div>
 
@@ -97,26 +113,28 @@ function NovaCartSpotlight({ proj }) {
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shrink-0"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(249,115,22,0.25), rgba(249,115,22,0.08))',
-                  border: '1px solid rgba(249,115,22,0.3)',
-                  boxShadow: '0 8px 24px rgba(249,115,22,0.2)',
+                  background: `linear-gradient(135deg, ${accent}40, ${accent}14)`,
+                  border: `1px solid ${accent}4d`,
+                  boxShadow: `0 8px 24px ${accent}33`,
                 }}
               >
-                🛒
+                {proj.icon}
               </div>
               <div>
                 <h3
                   className="text-3xl md:text-4xl font-black tracking-tight"
                   style={{
-                    background: 'linear-gradient(135deg, #ffffff 30%, #fb923c 80%)',
+                    background: `linear-gradient(135deg, #ffffff 30%, ${accent} 80%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}
                 >
-                  NovaCart
+                  {proj.name}
                 </h3>
-                <p className="text-sm font-medium text-orange-400 mt-0.5">{proj.category}</p>
+                <p className="text-sm font-medium mt-0.5" style={{ color: accent }}>
+                  {proj.category}
+                </p>
               </div>
             </div>
 
@@ -132,9 +150,9 @@ function NovaCartSpotlight({ proj }) {
                 rel="noreferrer"
                 className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #f97316, #fb923c)',
+                  background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
                   color: '#fff',
-                  boxShadow: '0 8px 24px rgba(249,115,22,0.35)',
+                  boxShadow: `0 8px 24px ${accent}59`,
                 }}
               >
                 <ExternalLink size={15} />
@@ -144,11 +162,38 @@ function NovaCartSpotlight({ proj }) {
                 href={proj.github}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/10 bg-white/5 text-white transition-all duration-200 hover:border-orange-500/40 hover:bg-orange-500/8 hover:scale-105 active:scale-95"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/10 bg-white/5 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${accent}66`;
+                  e.currentTarget.style.background = `${accent}14`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                }}
               >
                 <Github size={15} />
                 GitHub Repo
               </a>
+              {hasDemo && (
+                <a
+                  href={proj.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/10 bg-white/5 text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${accent}66`;
+                    e.currentTarget.style.background = `${accent}14`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                  }}
+                >
+                  <PlayCircle size={15} />
+                  Demo Video
+                </a>
+              )}
             </div>
           </div>
 
@@ -165,7 +210,7 @@ function NovaCartSpotlight({ proj }) {
                     key={f}
                     className="flex items-center gap-2 text-xs text-gray-300 py-1"
                   >
-                    <Zap size={11} className="text-orange-400 shrink-0" />
+                    <Zap size={11} style={{ color: accent }} className="shrink-0" />
                     {f}
                   </div>
                 ))}
@@ -396,7 +441,7 @@ function GroupProjectSection() {
       style={{ boxShadow: '0 20px 60px rgba(168,85,247,0.12)' }}
     >
       <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #a855f7, #ec4899, transparent)' }} />
-      <div className="p-8 md:p-10">
+      <div className="p-6 sm:p-8 md:p-10">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -469,17 +514,24 @@ function GroupProjectSection() {
 export default function Projects() {
   const [filter, setFilter] = useState('All');
 
-  // NovaCart is always extracted and shown separately as spotlight
-  const novaCart = projects.find((p) => p.featured);
+  // Featured projects (NovaCart + Expense Tracker) get the spotlight treatment.
+  // Order is preserved from the projects array so NovaCart stays primary.
+  const spotlightProjects = projects.filter((p) => p.featured);
 
-  // Grid projects — exclude NovaCart, then apply filter
+  // Grid projects — exclude all featured/spotlight projects, then apply filter
   const gridProjects =
     filter === 'All'
       ? projects.filter((p) => !p.featured)
       : projects.filter((p) => !p.featured && p.filterTags?.includes(filter));
 
-  // When MERN filter is active, we still show the NovaCart spotlight
-  const showSpotlight = filter === 'All' || filter === 'MERN';
+  // Which spotlight projects are visible under the active filter.
+  // 'All' always shows every spotlight. Otherwise match on filterTags.
+  const visibleSpotlights =
+    filter === 'All'
+      ? spotlightProjects
+      : spotlightProjects.filter((p) => p.filterTags?.includes(filter));
+
+  const showSpotlight = visibleSpotlights.length > 0;
 
   return (
     <section id="projects" className="relative overflow-hidden py-28 px-6">
@@ -501,11 +553,11 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* NovaCart Featured Spotlight */}
+        {/* Featured Project Spotlights (NovaCart, Expense Tracker, ...) */}
         <AnimatePresence>
-          {showSpotlight && novaCart && (
-            <NovaCartSpotlight key="novacart-spotlight" proj={novaCart} />
-          )}
+          {visibleSpotlights.map((proj) => (
+            <ProjectSpotlight key={`spotlight-${proj.id}`} proj={proj} />
+          ))}
         </AnimatePresence>
 
         {/* Grid label when spotlight is showing */}
