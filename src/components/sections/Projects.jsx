@@ -4,7 +4,6 @@ import {
   ExternalLink,
   Github,
   ArrowRight,
-  Users,
   Star,
   Zap,
   ShoppingCart,
@@ -12,12 +11,9 @@ import {
   Wallet,
 } from 'lucide-react';
 
-import {
-  projects,
-  groupProject,
-} from '../../data/portfolioData';
+import { projects } from '../../data/portfolioData';
 
-const FILTERS = ['All', 'React', 'Java', 'MERN', 'Team'];
+const FILTERS = ['All', 'React', 'Java', 'MERN'];
 
 /* ─────────────────────────────────────────────────────────────
    ICON MAP for spotlight badge row (per-project accent icon)
@@ -30,7 +26,6 @@ const SPOTLIGHT_ICONS = {
 /* ─────────────────────────────────────────────────────────────
    REUSABLE PROJECT SPOTLIGHT
    Full-width hero card used for every featured project
-   (NovaCart, Expense Tracker, and any future flagship project)
 ───────────────────────────────────────────────────────────── */
 function ProjectSpotlight({ proj }) {
   const accent = proj.accentColor || '#f97316';
@@ -324,12 +319,6 @@ function FlipCard({ proj, i }) {
                 {proj.status === 'live' ? '● Live' : proj.badge}
               </span>
             </div>
-            {proj.isGroupProject && (
-              <div className="absolute top-3 left-3 flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300">
-                <Users size={11} />
-                Team
-              </div>
-            )}
           </div>
           <div className="p-6 flex flex-col" style={{ height: 'calc(420px - 161px)' }}>
             <div className="flex-1 overflow-hidden">
@@ -427,105 +416,18 @@ function FlipCard({ proj, i }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   GROUP PROJECT SECTION
-───────────────────────────────────────────────────────────── */
-function GroupProjectSection() {
-  const gp = groupProject;
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="mt-16 rounded-[28px] border border-purple-500/20 bg-[#0d0d0d] overflow-hidden"
-      style={{ boxShadow: '0 20px 60px rgba(168,85,247,0.12)' }}
-    >
-      <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #a855f7, #ec4899, transparent)' }} />
-      <div className="p-6 sm:p-8 md:p-10">
-        <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Users size={16} className="text-purple-400" />
-              <span className="text-xs text-purple-400 font-semibold uppercase tracking-wider">
-                {gp.teamName} · Team Project
-              </span>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-1">{gp.name}</h3>
-            <p className="text-sm text-gray-400">{gp.type}</p>
-          </div>
-          <a
-            href={gp.github}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 text-xs text-gray-300 border border-white/10 px-4 py-2.5 rounded-xl hover:border-purple-500/40 transition-colors"
-          >
-            <Github size={14} />
-            View on GitHub
-          </a>
-        </div>
-        <p className="text-gray-400 text-sm leading-7 mb-8">{gp.description}</p>
-        <div className="mb-8">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Platform Modules</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {gp.modules.map((mod) => (
-              <div key={mod.name} className="flex items-start gap-3 p-4 rounded-2xl border border-white/5 bg-white/[0.02]">
-                <span className="text-xl shrink-0">{mod.icon}</span>
-                <div>
-                  <p className="text-sm font-semibold text-white mb-0.5">{mod.name}</p>
-                  <p className="text-xs text-gray-500 leading-5">{mod.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-purple-500/15 bg-purple-500/5 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-purple-400">
-              My Role — {gp.myRole.role}
-            </span>
-          </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-6">
-            {gp.myRole.responsibilities.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-xs text-gray-400">
-                <span className="text-purple-500 mt-0.5 shrink-0">▸</span>
-                {r}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="mt-6">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Tech Stack</h4>
-          <div className="flex flex-wrap gap-2">
-            {Object.values(gp.techStack).flat().map((tech) => (
-              <span key={tech} className="text-xs px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/8 text-purple-300">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
    MAIN PROJECTS SECTION
 ───────────────────────────────────────────────────────────── */
 export default function Projects() {
   const [filter, setFilter] = useState('All');
 
-  // Featured projects (NovaCart + Expense Tracker) get the spotlight treatment.
-  // Order is preserved from the projects array so NovaCart stays primary.
   const spotlightProjects = projects.filter((p) => p.featured);
 
-  // Grid projects — exclude all featured/spotlight projects, then apply filter
   const gridProjects =
     filter === 'All'
       ? projects.filter((p) => !p.featured)
       : projects.filter((p) => !p.featured && p.filterTags?.includes(filter));
 
-  // Which spotlight projects are visible under the active filter.
-  // 'All' always shows every spotlight. Otherwise match on filterTags.
   const visibleSpotlights =
     filter === 'All'
       ? spotlightProjects
@@ -553,7 +455,7 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Featured Project Spotlights (NovaCart, Expense Tracker, ...) */}
+        {/* Featured Project Spotlights */}
         <AnimatePresence>
           {visibleSpotlights.map((proj) => (
             <ProjectSpotlight key={`spotlight-${proj.id}`} proj={proj} />
@@ -588,9 +490,6 @@ export default function Projects() {
             )}
           </motion.div>
         </AnimatePresence>
-
-        {/* Group project section */}
-        {(filter === 'All' || filter === 'Team') && <GroupProjectSection />}
       </div>
     </section>
   );
