@@ -214,7 +214,7 @@ export default function Hero() {
   className="flex flex-wrap gap-3"
 >
   <a
-    href="/resume/Fullstackdevloper.pdf"
+    href="/resume/FullstackDevloper.pdf"
     download
     className="btn btn-primary"
   >
